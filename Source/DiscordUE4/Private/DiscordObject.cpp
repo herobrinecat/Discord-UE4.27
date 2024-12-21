@@ -3,6 +3,7 @@
 #include "DiscordObject.h"
 #include "../discord-files/discord.h"
 #include "UObject/Class.h"
+#include "UObject/StrongObjectPtr.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiscord, Log, All)
 
@@ -23,7 +24,7 @@ void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequire
 {
 	if (!DiscordObjectInstance.IsValid())
 	{
-		DiscordObjectInstance = TStrongObjectPtr(NewObject<UDiscordObject>());
+		DiscordObjectInstance = TStrongObjectPtr<UDiscordObject>(NewObject<UDiscordObject>());
 		DiscordObjectInstance->AddToRoot();
 		DiscordObjectInstance->Internal_CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
 	}
@@ -45,7 +46,7 @@ void UDiscordObject::DestroyDiscordObject()
 		delete core;
 		core = nullptr;
 		DiscordObjectInstance->RemoveFromRoot();
-		DiscordObjectInstance->MarkAsGarbage();
+		DiscordObjectInstance->MarkPendingKill();
 		DiscordObjectInstance = nullptr;
 		LogDisplay("Discord object destroyed.");
 	}
