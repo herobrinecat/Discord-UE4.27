@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Tickable.h"
+#include "UObject/StrongObjectPtr.h"
 #include "DiscordObject.generated.h"
 
 UENUM(BlueprintType)
